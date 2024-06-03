@@ -1,3 +1,4 @@
+//go:build freebsd || netbsd || openbsd || dragonfly || solaris
 // +build freebsd netbsd openbsd dragonfly solaris
 
 package machineid
@@ -25,7 +26,7 @@ func machineID() (string, error) {
 }
 
 func readHostid() (string, error) {
-	buf, err := readFile(hostidPath)
+	buf, err := os.ReadFile(hostidPath)
 	if err != nil {
 		return "", err
 	}

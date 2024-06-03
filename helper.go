@@ -26,10 +26,6 @@ func protect(appID, id string) string {
 	return hex.EncodeToString(mac.Sum(nil))
 }
 
-func readFile(filename string) ([]byte, error) {
-	return os.ReadFile(filename)
-}
-
 func trim(s string) string {
 	return strings.TrimSpace(strings.Trim(s, "\n"))
 }
