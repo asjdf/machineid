@@ -28,3 +28,13 @@ func TestProtectedID(t *testing.T) {
 		t.Error("id and hashed id are the same")
 	}
 }
+
+func TestGet(t *testing.T) {
+	info, err := Get()
+	if err != nil {
+		t.Error(err)
+	}
+	if info.ID() == "" {
+		t.Error("Got empty machine id")
+	}
+}

@@ -1,3 +1,4 @@
+//go:build darwin
 // +build darwin
 
 package machineid
@@ -11,17 +12,17 @@ import (
 
 // machineID returns the uuid returned by `ioreg -rd1 -c IOPlatformExpertDevice`.
 // If there is an error running the commad an empty string is returned.
-func machineID() (string, error) {
+func machineID() (string, IDType, error) {
 	buf := &bytes.Buffer{}
 	err := run(buf, os.Stderr, "ioreg", "-rd1", "-c", "IOPlatformExpertDevice")
 	if err != nil {
-		return "", err
+		return "", TypeUnknown, err
 	}
 	id, err := extractID(buf.String())
 	if err != nil {
-		return "", err
+		return "", TypeUnknown, err
 	}
-	return trim(id), nil
+	return trim(id), TypeStandalone, nil
 }
 
 func extractID(lines string) (string, error) {

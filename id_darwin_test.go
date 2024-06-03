@@ -1,3 +1,4 @@
+//go:build darwin
 // +build darwin
 
 package machineid
@@ -56,7 +57,7 @@ func Test_extractID_invalidInput(t *testing.T) {
 }
 
 func Test_machineID(t *testing.T) {
-	got, err := machineID()
+	got, _, err := machineID()
 	if err != nil {
 		t.Error(err)
 	}

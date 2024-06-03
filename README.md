@@ -18,13 +18,13 @@
 Get the library with
 
 ```bash
-go get github.com/denisbrodbeck/machineid
+go get github.com/asjdf/machineid
 ```
 
 You can also add the cli app directly to your `$GOPATH/bin` with
 
 ```bash
-go get github.com/denisbrodbeck/machineid/cmd/machineid
+go get github.com/asjdf/machineid/cmd/machineid
 ```
 
 ## Usage
@@ -35,7 +35,7 @@ package main
 import (
   "fmt"
   "log"
-  "github.com/denisbrodbeck/machineid"
+  "github.com/asjdf/machineid"
 )
 
 func main() {
@@ -55,7 +55,7 @@ package main
 import (
   "fmt"
   "log"
-  "github.com/denisbrodbeck/machineid"
+  "github.com/asjdf/machineid"
 )
 
 func main() {
@@ -113,7 +113,7 @@ import (
   "crypto/hmac"
   "crypto/sha256"
   "fmt"
-  "github.com/denisbrodbeck/machineid"
+  "github.com/asjdf/machineid"
 )
 
 const appKey = "WowSuchNiceApp"

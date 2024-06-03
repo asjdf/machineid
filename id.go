@@ -14,10 +14,10 @@
 // calculating HMAC-SHA256 over a user provided app ID, which is keyed by the machine id.
 //
 // Caveat: Image-based environments have usually the same machine-id (perfect clone).
-// Linux users can generate a new id with `dbus-uuidgen` and put the id into
+// Linux's users can generate a new id with `dbus-uuidgen` and put the id into
 // `/var/lib/dbus/machine-id` and `/etc/machine-id`.
 // Windows users can use the `sysprep` toolchain to create images, which produce valid images ready for distribution.
-package machineid // import "github.com/denisbrodbeck/machineid"
+package machineid // import "github.com/asjdf/machineid"
 
 import (
 	"fmt"
@@ -26,7 +26,7 @@ import (
 // ID returns the platform specific machine id of the current host OS.
 // Regard the returned id as "confidential" and consider using ProtectedID() instead.
 func ID() (string, error) {
-	id, err := machineID()
+	id, _, err := machineID()
 	if err != nil {
 		return "", fmt.Errorf("machineid: %v", err)
 	}
@@ -42,4 +42,41 @@ func ProtectedID(appID string) (string, error) {
 		return "", fmt.Errorf("machineid: %v", err)
 	}
 	return protect(appID, id), nil
+}
+
+type IDType int
+
+const (
+	TypeUnknown = iota
+	TypeStandalone
+	TypeKubernetes
+)
+
+type Info struct {
+	id     string
+	idType IDType
+}
+
+func (i Info) ID() string {
+	return i.id
+}
+
+func (i Info) ProtectedID(appID string) string {
+	return protect(appID, i.id)
+}
+
+func Get() (Info, error) {
+	id, idType, err := machineID()
+	if err != nil {
+		return Info{}, fmt.Errorf("machineid: %v", err)
+	}
+	return Info{id: id, idType: idType}, nil
+}
+
+func MustGet() Info {
+	id, err := ID()
+	if err != nil {
+		panic(err)
+	}
+	return Info{id: id}
 }

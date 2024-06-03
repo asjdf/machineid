@@ -1,3 +1,4 @@
+//go:build linux
 // +build linux
 
 package machineid
@@ -14,14 +15,14 @@ const (
 // machineID returns the uuid specified at `/var/lib/dbus/machine-id` or `/etc/machine-id`.
 // If there is an error reading the files an empty string is returned.
 // See https://unix.stackexchange.com/questions/144812/generate-consistent-machine-unique-id
-func machineID() (string, error) {
+func machineID() (string, IDType, error) {
 	id, err := readFile(dbusPath)
 	if err != nil {
 		// try fallback path
 		id, err = readFile(dbusPathEtc)
 	}
 	if err != nil {
-		return "", err
+		return "", TypeUnknown, err
 	}
-	return trim(string(id)), nil
+	return trim(string(id)), TypeStandalone, nil
 }
