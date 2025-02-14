@@ -20,7 +20,7 @@ const (
 // If there is an error reading the files an empty string is returned.
 // See https://unix.stackexchange.com/questions/144812/generate-consistent-machine-unique-id
 func machineID() (string, IDType, error) {
-	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
+	if _, exist := os.LookupEnv("KUBERNETES_SERVICE_HOST"); exist {
 		// k8s cluster detected
 		ca, err := os.ReadFile(k8sCAPath)
 		if err == nil && len(ca) > 0 {
